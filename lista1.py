@@ -56,6 +56,9 @@ def find_gcf(first:int, second:int):
     return max
 
 class Fraction:
+    """
+    Representation of a fraction
+    """
     def __init__(self, numerator:int, denominator:int):
         #---------checking-given-data----------------------------------
         if not isinstance(numerator, int) or not isinstance(denominator, int):
@@ -71,8 +74,10 @@ class Fraction:
         self.denominator = int(denominator/common)
     
     def __str__(self):
-        common = find_gcf(self.denominator, self.numerator)
-        return str(int(self.numerator/common))+'/'+str(int(self.denominator/common))
+        return str(self.numerator)+'/'+str(self.denominator)
+    
+    def __repr__(self):
+        return self.__str__()
     
     def __add__(self, other):
         #---------checking-given-data----------------------------------
@@ -104,8 +109,8 @@ class Fraction:
             return Fraction(int(first_mul*self.numerator-second_mul*other.numerator), common)
 
     def __rsub__(self, other):
-        self.numerator *= -1
-        return self.__add__(other)
+        new = self - other
+        return Fraction((-1)*new.numerator, new.denominator)
 
     def __mul__(self, other):
         #---------checking-given-data----------------------------------
@@ -125,8 +130,7 @@ class Fraction:
         return Fraction(int(self.numerator*other.denominator), int(self.denominator*other.numerator))
 
     def __rtruediv__(self, other):
-        self.numerator, self.denominator = self.denominator, self.numerator
-        return self.__mul__(other)
+        return Fraction(int(other.numerator*self.denominator), int(other.denominator*self.numerator))
 
     def getNum(self):
         """
@@ -210,6 +214,9 @@ class Fraction:
             return False
 
 class FractionExtended(Fraction):
+    """
+    Representation of a fraction
+    """
     def __init__(self, numerator, denominator):
         #---------checking-given-data----------------------------------
         if not (isinstance(numerator, int) or isinstance(numerator, float)) or not (isinstance(denominator, int) or isinstance(denominator, float)): #check in other places
@@ -280,6 +287,12 @@ class FractionExtended(Fraction):
             raise TypeError
 
     def mixed(self, switch):
+        """
+        Find a mixed form of the given fracture
+
+        @param switch: (bool) information if the fraction shoould be returned in a mixed form
+        @return: (str) representation of a fractor in a wanted form
+        """
         #---------checking-given-data----------------------------------
         if not isinstance(switch, bool):
             raise TypeError
@@ -344,49 +357,3 @@ class FractionExtended(Fraction):
             return Fraction(self.numerator, self.denominator) <= Fraction(new_other.numerator, new_other.denominator)
         else:
             raise TypeError
-    
-if __name__ == '__main__':
-    #print(Fraction(1.5, 3))
-    print(FractionExtended(1.5, 3))
-    print(FractionExtended(3, 3.5))
-    print(FractionExtended(3, 3.55))
-
-    print(FractionExtended(1,2)+3)
-    print(3+FractionExtended(1,2))
-    print(FractionExtended(1,2)-3)
-    print(3-FractionExtended(1,2))
-    print(FractionExtended(1,2)*3)
-    print(3*FractionExtended(1,2))
-    print(FractionExtended(1,2)/3)
-    print(3/FractionExtended(1,2))
-
-    f = FractionExtended(1.5, 3.1)
-    g = FractionExtended(3.55, 3)
-
-    print(f.mixed(True))
-    print(g.mixed(True))
-    print(f.mixed(False))
-    print(g.mixed(False))
-    print('-------------------------')
-    print(f == g)
-    print(f == f)
-    print(f != g)
-    print(f != f)
-    print('-------------------------')
-    print(f < g)
-    print(f > g)
-    print(f <= g)
-    print(f >= g)
-    print('-------------------------')
-    print(f < 1)
-    print(f > 1.5)
-    print(f <= 0.2)
-    print(f >= 0)
-    print('-------------------------')
-    print(1 > f)
-    print(1.5 < f)
-    print(0.2 >= f)
-    print(0 <= f)
-    print('-------------------------')
-    print(FractionExtended(1,2)>0.6)
-    print(FractionExtended(1,2)==1/2)
