@@ -219,7 +219,7 @@ class FractionExtended(Fraction):
     """
     def __init__(self, numerator, denominator):
         #---------checking-given-data----------------------------------
-        if not (isinstance(numerator, int) or isinstance(numerator, float)) or not (isinstance(denominator, int) or isinstance(denominator, float)): #check in other places
+        if not (isinstance(numerator, int) or isinstance(numerator, float)) or not (isinstance(denominator, int) or isinstance(denominator, float)):
             raise TypeError
         #--------------------------------------------------------------
         if denominator < 0:
