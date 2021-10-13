@@ -10,9 +10,9 @@ def find_lcm(first:int, second:int):
     """
     #---------checking-given-data----------------------------------
     if not isinstance(first, int) or not isinstance(second, int):
-        raise TypeError
+        raise TypeError('numbers for the lcm should be integers')
     if first <= 0 or second <= 0:
-        raise ValueError
+        raise ValueError('numbers for the lcm should be positive')
     #--------------------------------------------------------------
     n=1
     if first > second:
@@ -38,7 +38,7 @@ def find_gcf(first:int, second:int):
     """
     #---------checking-given-data----------------------------------
     if not isinstance(first, int) or not isinstance(second, int):
-        raise TypeError
+        raise TypeError('numbers for the gcf should be integers')
     #--------------------------------------------------------------
     if abs(first) > abs(second):
         bigger = first
@@ -62,13 +62,14 @@ class Fraction:
     def __init__(self, numerator:int, denominator:int):
         #---------checking-given-data----------------------------------
         if not isinstance(numerator, int) or not isinstance(denominator, int):
-            raise TypeError
+            raise TypeError('numbers for the fraction should be integers')
+        if denominator == 0:
+            raise ValueError('division by zero')
         #--------------------------------------------------------------
         if denominator < 0:
             numerator *= -1
             denominator *= -1
-        elif denominator == 0:
-            raise ValueError
+
         common = find_gcf(denominator, numerator)
         self.numerator = int(numerator/common)
         self.denominator = int(denominator/common)
@@ -82,7 +83,7 @@ class Fraction:
     def __add__(self, other):
         #---------checking-given-data----------------------------------
         if not isinstance(other, Fraction):
-            raise TypeError
+            raise TypeError('adding not a fraction')
         #--------------------------------------------------------------
         if self.denominator == other.denominator:
             return Fraction(self.numerator+other.numerator,self.denominator)
@@ -98,7 +99,7 @@ class Fraction:
     def __sub__(self, other):
         #---------checking-given-data----------------------------------
         if not isinstance(other, Fraction):
-            raise TypeError
+            raise TypeError('subtracting not a fraction')
         #--------------------------------------------------------------
         if self.denominator == other.denominator:
             return Fraction(self.numerator-other.numerator,self.denominator)
@@ -115,7 +116,7 @@ class Fraction:
     def __mul__(self, other):
         #---------checking-given-data----------------------------------
         if not isinstance(other, Fraction):
-            raise TypeError
+            raise TypeError('multiplying by not a fraction')
         #--------------------------------------------------------------
         return Fraction(int(self.numerator*other.numerator), int(self.denominator*other.denominator))
     
@@ -125,7 +126,7 @@ class Fraction:
     def __truediv__(self, other):
         #---------checking-given-data----------------------------------
         if not isinstance(other, Fraction):
-            raise TypeError
+            raise TypeError('dividing by not a fraction')
         #--------------------------------------------------------------
         return Fraction(int(self.numerator*other.denominator), int(self.denominator*other.numerator))
 
@@ -147,7 +148,7 @@ class Fraction:
     def __eq__(self, other):
         #---------checking-given-data----------------------------------
         if not isinstance(other, Fraction):
-            raise TypeError
+            raise TypeError('comparing with not a fraction')
         #--------------------------------------------------------------
         if self.numerator == other.numerator and self.denominator == other.denominator:
             return True
@@ -157,14 +158,14 @@ class Fraction:
     def __ne__(self, other):
         #---------checking-given-data----------------------------------
         if not isinstance(other, Fraction):
-            raise TypeError
+            raise TypeError('comparing with not a fraction')
         #--------------------------------------------------------------
         return not(self==other)
 
     def __gt__(self, other):
         #---------checking-given-data----------------------------------
         if not isinstance(other, Fraction):
-            raise TypeError
+            raise TypeError('comparing with not a fraction')
         #--------------------------------------------------------------
         common = find_lcm(self.denominator, other.denominator)
         first_mul = common/self.denominator
@@ -177,7 +178,7 @@ class Fraction:
     def __lt__(self, other):
         #---------checking-given-data----------------------------------
         if not isinstance(other, Fraction):
-            raise TypeError
+            raise TypeError('comparing with not a fraction')
         #--------------------------------------------------------------
         common = find_lcm(self.denominator, other.denominator)
         first_mul = common/self.denominator
@@ -190,7 +191,7 @@ class Fraction:
     def __ge__(self, other):
         #---------checking-given-data----------------------------------
         if not isinstance(other, Fraction):
-            raise TypeError
+            raise TypeError('comparing with not a fraction')
         #--------------------------------------------------------------
         common = find_lcm(self.denominator, other.denominator)
         first_mul = common/self.denominator
@@ -203,7 +204,7 @@ class Fraction:
     def __le__(self, other):
         #---------checking-given-data----------------------------------
         if not isinstance(other, Fraction):
-            raise TypeError
+            raise TypeError('comparing with not a fraction')
         #--------------------------------------------------------------
         common = find_lcm(self.denominator, other.denominator)
         first_mul = common/self.denominator
@@ -220,18 +221,22 @@ class FractionExtended(Fraction):
     def __init__(self, numerator, denominator):
         #---------checking-given-data----------------------------------
         if not (isinstance(numerator, int) or isinstance(numerator, float)) or not (isinstance(denominator, int) or isinstance(denominator, float)):
-            raise TypeError
+            raise TypeError('numbers for the fraction should be integers or floats')
+        if denominator == 0:
+            raise ValueError('division by 0')
         #--------------------------------------------------------------
         if denominator < 0:
             numerator *= -1
             denominator *= -1
-        elif denominator == 0:
+        if denominator == 0:
             raise ValueError
         if isinstance(numerator, float):
+            numerator = round(numerator,5)
             while numerator%1 != 0:
                 numerator *= 10
                 denominator *= 10
         if isinstance(denominator, float):
+            denominator = round(denominator,5)
             while denominator%1 != 0:
                 numerator *= 10
                 denominator *= 10
@@ -251,7 +256,7 @@ class FractionExtended(Fraction):
             sum1 = Fraction(self.numerator, self.denominator)+Fraction(new_other.numerator, new_other.denominator)
             return FractionExtended(sum1.numerator, sum1.denominator)
         else:
-            raise TypeError
+            raise TypeError('adding not a number')
 
     def __sub__(self, other):
         if isinstance(other, Fraction) or isinstance(other, FractionExtended):
@@ -262,7 +267,7 @@ class FractionExtended(Fraction):
             sub1 = Fraction(self.numerator, self.denominator)-Fraction(new_other.numerator, new_other.denominator)
             return FractionExtended(sub1.numerator, sub1.denominator)
         else:
-            raise TypeError
+            raise TypeError('subtracting not a number')
     
     def __mul__(self, other):
         if isinstance(other, Fraction) or isinstance(other, FractionExtended):
@@ -273,7 +278,7 @@ class FractionExtended(Fraction):
             mul1 = Fraction(self.numerator, self.denominator)*Fraction(new_other.numerator, new_other.denominator)
             return FractionExtended(mul1.numerator, mul1.denominator)
         else:
-            raise TypeError
+            raise TypeError('multiplying by not a number')
 
     def __truediv__(self, other):
         if isinstance(other, Fraction) or isinstance(other, FractionExtended):
@@ -284,7 +289,7 @@ class FractionExtended(Fraction):
             div1 = Fraction(self.numerator, self.denominator)/Fraction(new_other.numerator, new_other.denominator)
             return FractionExtended(div1.numerator, div1.denominator)
         else:
-            raise TypeError
+            raise TypeError('dividing by not a number')
 
     def mixed(self, switch):
         """
@@ -295,7 +300,7 @@ class FractionExtended(Fraction):
         """
         #---------checking-given-data----------------------------------
         if not isinstance(switch, bool):
-            raise TypeError
+            raise TypeError('switch can only')
         #--------------------------------------------------------------
         if switch == True:
             first = int(self.numerator//self.denominator)
@@ -311,7 +316,7 @@ class FractionExtended(Fraction):
             new_other = FractionExtended(other, 1)
             return Fraction(self.numerator, self.denominator) == Fraction(new_other.numerator, new_other.denominator)
         else:
-            raise TypeError
+            raise TypeError('comparing with not a number')
     
     def __ne__(self, other):
         if isinstance(other, Fraction) or isinstance(other, FractionExtended):
@@ -320,7 +325,7 @@ class FractionExtended(Fraction):
             new_other = FractionExtended(other, 1)
             return Fraction(self.numerator, self.denominator) != Fraction(new_other.numerator, new_other.denominator)
         else:
-            raise TypeError
+            raise TypeError('comparing with not a number')
 
     def __gt__(self, other):
         if isinstance(other, Fraction) or isinstance(other, FractionExtended):
@@ -329,7 +334,7 @@ class FractionExtended(Fraction):
             new_other = FractionExtended(other, 1)
             return Fraction(self.numerator, self.denominator) > Fraction(new_other.numerator, new_other.denominator)
         else:
-            raise TypeError
+            raise TypeError('comparing with not a number')
     
     def __lt__(self, other):
         if isinstance(other, Fraction) or isinstance(other, FractionExtended):
@@ -338,7 +343,7 @@ class FractionExtended(Fraction):
             new_other = FractionExtended(other, 1)
             return Fraction(self.numerator, self.denominator) < Fraction(new_other.numerator, new_other.denominator)
         else:
-            raise TypeError
+            raise TypeError('comparing with not a number')
     
     def __ge__(self, other):
         if isinstance(other, Fraction) or isinstance(other, FractionExtended):
@@ -347,7 +352,7 @@ class FractionExtended(Fraction):
             new_other = FractionExtended(other, 1)
             return Fraction(self.numerator, self.denominator) >= Fraction(new_other.numerator, new_other.denominator)
         else:
-            raise TypeError
+            raise TypeError('comparing with not a number')
     
     def __le__(self, other):
         if isinstance(other, Fraction) or isinstance(other, FractionExtended):
@@ -356,4 +361,4 @@ class FractionExtended(Fraction):
             new_other = FractionExtended(other, 1)
             return Fraction(self.numerator, self.denominator) <= Fraction(new_other.numerator, new_other.denominator)
         else:
-            raise TypeError
+            raise TypeError('comparing with not a number')
