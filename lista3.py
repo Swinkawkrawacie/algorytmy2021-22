@@ -3,8 +3,45 @@
 from matplotlib import pyplot as plt
 import numpy as np
 
+def new_power(a,n,k=0):
+    if n==0:
+        return 1
+    if n%2 == 0:
+        return new_power(a*a,n//2,k)
+    else:
+        return new_power(a*a,n//2,k)*a
+
+class binom:
+    def __init__(self, n, k, p, l=[]):
+        self.n = n
+        self.k = k
+        self.p = p
+        self.l = l
+        self.calc_value()
+        self.value = self.l[self.k-1]
+        self.s = sum(self.l[i] for i in range(self.k))
+        
+    def calc_value(self):
+        if self.k>self.n:
+            return 0
+        if self.k==self.n or self.k==0:
+            result = new_power((1-self.p),self.n)
+            if len(self.l)==0 or len(self.l)==self.k:
+                self.l.append(result)
+            return result
+        result = binom(self.n,self.k-1,self.p,self.l).calc_value()*self.p*(self.n-self.k+1)/((1-self.p)*self.k)
+        if len(self.l)==self.k:
+            self.l.append(result)
+        return result
+
+def probab(n,k,p):
+    if n==k:
+        return 1
+    else:
+        return binom(n,k,p).s
+
 #Horner's method
-def calc_value(factors, x):
+def calculate_value(factors, x):
     """
     Calculate value of polynomial for x
 
@@ -79,10 +116,17 @@ def text_read(name):
 if __name__ == '__main__':
     
     #first exercise
-    
+    print("-------first--------")
+    print(probab(20,3,0.2))
+    print(probab(20,20,0.2))
+    print(probab(20,1,0.2))
+    print(probab(20,19,0.2))
+
+
     #second exercise    
-    print(calc_value([1,2,3,4,5,6],1))
-    print(calc_value([1,2,3,4,5,6,7],7))
+    print("-------second--------")
+    print(calculate_value([1,2,3,4,5,6],1))
+    print(calculate_value([1,2,3,4,5,6,7],7))
 
     #the amount of multiplications needed = n-1
 
