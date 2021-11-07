@@ -2,9 +2,9 @@ def counting_chars_without_ifs(filename):
     file_ref = open(filename, 'r')
     text = file_ref.read()
 
-    char_list = list(str(text))
+    char_list = list(str(text).upper())
     char_list.sort()
-    characters = set(str(text))
+    characters = set(str(text).upper())
 
     char_count = {}
     characters = list(characters)
@@ -15,19 +15,6 @@ def counting_chars_without_ifs(filename):
         while len(char_list)>0 and char_list[0] == i:
             char_count[i] += 1
             del char_list[0]
-
-    # deleting double letters
-    for i in range(ord('A'), ord('Z')+1):
-        try:
-            char_count[chr(i)] += char_count.get(chr(i+32))
-            char_count.__delitem__(chr(i+32))
-        except:
-            try:
-                p = char_count[chr(i+32)]
-                char_count[chr(i)] = p
-                char_count.__delitem__(chr(i+32))
-            except:
-                pass
 
     #removing spaces, tabs and new lines
     try:
@@ -46,4 +33,3 @@ def counting_chars_without_ifs(filename):
         pass
 
     return char_count
-    
