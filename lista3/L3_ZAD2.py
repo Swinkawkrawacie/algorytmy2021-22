@@ -5,10 +5,10 @@ def ordinary_polynomial_value_calc(coeff, arg):
     if not isinstance(coeff,list) or not (isinstance(arg, int) or isinstance(arg, float)):
         raise TypeError('incorrect type of given data')
     #---------------------------------------------------------------
-    value = 0
+    value = coeff[0]
     count_mult = 0
     count_add = 0
-    for i in range(len(coeff)):
+    for i in range(1,len(coeff)):
         value += coeff[i]*arg**i
         count_mult += i
         count_add += 1
