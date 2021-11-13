@@ -1,10 +1,12 @@
+#!/usr/bin/env python
+
 def counting_chars_without_ifs(filename):
     file_ref = open(filename, 'r')
     text = file_ref.read()
 
-    char_list = list(str(text).upper())
+    char_list = list(str(text).lower())
     char_list.sort()
-    characters = set(str(text).upper())
+    characters = set(str(text).lower())
 
     char_count = {}
     characters = list(characters)

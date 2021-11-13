@@ -42,7 +42,7 @@ class binom:
         self.mult = mult
         self.calc_value()
         self.value = self.all_list[self.k-1]
-        self.s = sum(self.all_list[i] for i in range(self.k))
+        self.s = sum(self.all_list[i] for i in range(self.k+1))
         
     def calc_value(self, mult_in=0):
         """
@@ -84,11 +84,3 @@ def probability(n, k, p):
         prob = new_prob.s
         count_mult = new_prob.mult
         return (prob,count_mult)
-
-if __name__ == '__main__':
-    
-    print(probability(20,3,0.2))
-    print(probability(20,20,0.2))
-    print(probability(20,1,0.2))
-    print(probability(20,19,0.2))
-    print(probability(0,0,0.2))
