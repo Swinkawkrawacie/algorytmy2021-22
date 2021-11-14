@@ -41,10 +41,11 @@ def probability(n, k, p):
     all_sum = 1
     base1 = new_power(1-p, n)
     base = base1[0]
+    count_mult += base1[1]
     if k>0:
         mult1 = p/(1-p)
-        mult2 = p/(1-p)
-        count_mult += 2+base1[1]
+        mult2 = mult1
+        count_mult += 2
         all_sum += binom(n,1)*mult2
         count_mult += 1
         if k>1:
@@ -55,7 +56,6 @@ def probability(n, k, p):
     else:
         prob = base
         return (prob,count_mult)
-
 
     prob = all_sum*base
     count_mult += 1
@@ -69,5 +69,5 @@ if __name__ == '__main__':
     print(probability(20,19,0.2))
     print(probability(5,0,0.2))
     print(probability(0,0,0.2))
-    print(new_power(0.8,5))
+    print(new_power(0.9,13))
     
