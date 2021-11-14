@@ -60,14 +60,3 @@ def probability(n, k, p):
     prob = all_sum*base
     count_mult += 1
     return (prob,count_mult)
-
-if __name__ == '__main__':
-    
-    print(probability(20,3,0.2))
-    print(probability(20,20,0.2))
-    print(probability(20,1,0.2))
-    print(probability(20,19,0.2))
-    print(probability(5,0,0.2))
-    print(probability(0,0,0.2))
-    print(new_power(0.9,13))
-    
