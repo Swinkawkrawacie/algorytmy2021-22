@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 from L4_ZAD1 import QueueBaB
 from L4_ZAD1 import QueueBaE
 
+
 if __name__ == "__main__":
 
     xaxis = range(1000,2000,5)
