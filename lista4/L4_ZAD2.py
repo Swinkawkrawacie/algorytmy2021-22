@@ -9,7 +9,7 @@ from L4_ZAD1 import QueueBaE
 
 if __name__ == "__main__":
 
-    xaxis = range(100,1000,5)
+    xaxis = range(1000,2000,5)
     BaB = QueueBaB()
     BaE = QueueBaE()
     
@@ -33,6 +33,12 @@ if __name__ == "__main__":
     
     plt.scatter(xaxis,on_list_time1, label = "BaB")
     plt.scatter(xaxis,on_list_time2, label = "BaE")
+    plt.title("Adding to the queue")
+    plt.legend()
+    plt.show()
+
+    plt.plot(xaxis,on_list_time1, label = "BaB")
+    plt.plot(xaxis,on_list_time2, label = "BaE")
     plt.title("Adding to the queue")
     plt.legend()
     plt.show()
@@ -61,8 +67,13 @@ if __name__ == "__main__":
     plt.legend()
     plt.show()
 
-    #-----------adding and removing the queue------------------
+    plt.plot(xaxis,of_list_time1, label = "BaB")
+    plt.plot(xaxis,of_list_time2, label = "BaE")
+    plt.title("removing from the queue")
+    plt.legend()
+    plt.show()
 
+    #-----------adding and removing the queue------------------
     list_time1 = []
     list_time2 = []
 
@@ -90,9 +101,18 @@ if __name__ == "__main__":
     plt.legend()
     plt.show()
 
-    #-------------difference between BaB and BaE------------------
+    plt.plot(xaxis,list_time1, label = "BaB")
+    plt.plot(xaxis,list_time2, label = "BaE")
+    plt.title("adding and removing from the queue")
+    plt.legend()
+    plt.show()
 
+    #-------------difference between BaB and BaE------------------
     plt.scatter(xaxis,[list_time1[i]-list_time2[i] for i in range(len(list_time1))], label = "BaB")
+    plt.title("comparison (BaB time - BaE time)")
+    plt.show()
+
+    plt.plot(xaxis,[list_time1[i]-list_time2[i] for i in range(len(list_time1))], label = "BaB")
     plt.title("comparison (BaB time - BaE time)")
     plt.show()
 

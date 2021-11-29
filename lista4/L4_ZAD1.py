@@ -1,3 +1,5 @@
+#!/usr/bin/env python 
+
 class QueueBaB(object):
   """
   Klasa implementująca kolejkę za pomocą pythonowej listy tak,
@@ -13,7 +15,7 @@ class QueueBaB(object):
     Pobiera jako argument obiekt który ma być dodany.
     Niczego nie zwraca.
     """
-    self.list_of_items.insert(0,item)
+    self.list_of_items.append(item)
     
   def dequeue(self):
     """
@@ -21,7 +23,9 @@ class QueueBaB(object):
     Nie pobiera argumentów.
     Zwraca ściągnięty obiekt.
     """
-    return self.list_of_items.pop()
+    if self.is_empty():
+      raise IndexError('the queue is empty')
+    return self.list_of_items.pop(0)
   
   def is_empty(self):
     """
@@ -55,7 +59,7 @@ class QueueBaE(object):
     Pobiera jako argument obiekt który ma być dodany.
     Niczego nie zwraca.
     """
-    self.list_of_items.append(item)
+    self.list_of_items.insert(0,item)
     
   def dequeue(self):
     """
@@ -63,7 +67,9 @@ class QueueBaE(object):
     Nie pobiera argumentów.
     Zwraca ściągnięty obiekt.
     """
-    return self.list_of_items.pop(0)
+    if self.is_empty():
+      raise IndexError('the queue is empty')
+    return self.list_of_items.pop()
   
   def is_empty(self):
     """
@@ -80,3 +86,32 @@ class QueueBaE(object):
     Zwraca liczbę obiektów w kolejce.
     """
     return len(self.list_of_items)
+
+if __name__ == "__main__":
+  print('------------------------first----------------------------')
+  x = QueueBaB()
+  x.enqueue(15)
+  x.enqueue('kot')
+  x.enqueue(True)
+  x.enqueue(None)
+  print(x.list_of_items)
+  print(x.size())
+  print(x.is_empty())
+  for i in range(x.size()):
+    print(x.dequeue())
+    print(x.list_of_items)
+  print(x.is_empty())
+
+  print("------------------------second------------------------")
+  x = QueueBaE()
+  x.enqueue(15)
+  x.enqueue('kot')
+  x.enqueue(True)
+  x.enqueue(None)
+  print(x.list_of_items)
+  print(x.size())
+  print(x.is_empty())
+  for i in range(x.size()):
+    print(x.dequeue())
+    print(x.list_of_items)
+  print(x.is_empty())

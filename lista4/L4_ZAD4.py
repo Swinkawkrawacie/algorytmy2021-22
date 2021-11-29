@@ -1,5 +1,7 @@
 #!/usr/bin/env python 
 
+import os.path
+
 class stack():
 
     def __init__(self):
@@ -27,6 +29,8 @@ def checking_HTML_correctness(filename):
     Jako argument przyjmuje nazwę pliku, który ma sprawdzić.
     Zwraca True jeśli dokument jest poprawny składniowo i False jeśli nie jest.
     """
+    if not os.path.exists(filename):
+        raise ValueError('given file does not exist')
     file_obj = open(filename, 'r')
     text = file_obj.read()
     single = ['!DOCTYPE', 'meta', 'link', 'img', 'br', 'hr']
@@ -84,7 +88,7 @@ def checking_HTML_correctness(filename):
         return False
 
 if __name__ == "__main__":
-    print(checking_HTML_correctness('L4_ZAD4_sampleHTML_1.txt'))
-    print(checking_HTML_correctness('L4_ZAD4_sampleHTML_2.txt'))
-    print(checking_HTML_correctness('L4_ZAD4_sampleHTML_3.txt'))
+    print('first text, correct:',checking_HTML_correctness('L4_ZAD4_sampleHTML_1.txt'))
+    print('second text, correct:',checking_HTML_correctness('L4_ZAD4_sampleHTML_2.txt'))
+    print('third text, correct:',checking_HTML_correctness('L4_ZAD4_sampleHTML_3.txt'))
     # " " at the beggining

@@ -1,3 +1,5 @@
+#!/usr/bin/env python 
+
 class Node:
   
   def __init__(self,init_data):
@@ -93,7 +95,7 @@ class UnorderedList(object):
     index_count = 0
     current = self.head
     if self.search(item):
-      while current != item:
+      while current.get_data() != item:
         index_count += 1
         current = current.get_next()
       return index_count
@@ -111,7 +113,7 @@ class UnorderedList(object):
     na zadanej pozycji (np. na 5. miejsce w 3-elementowej liście).
     """
     if pos<(-1)*self.size() or pos>=self.size():
-      raise IndexError
+      raise IndexError('incorrect position')
     
     if pos<0:
       pos = self.size()-pos
@@ -136,19 +138,25 @@ class UnorderedList(object):
     gdy usunięcie elementu z danej pozycji jest niemożliwe.
     """
     if pos<(-1)*self.size() or pos>=self.size():
-      raise IndexError
+      raise IndexError('icorrect position')
     
     if pos<0:
-      pos = self.size()-pos
+      pos = self.size()+pos
     
+    if pos == 0:
+      result = self.head.get_data()
+      self.head = self.head.get_next()
+      return result
+    if pos == 1:
+      result = self.head.get_next().get_data()
+      self.head.set_next(self.head.get_next().get_next())
+      return result
     previous = self.head
     for i in range(pos-1):
       previous = previous.get_next()
     current = previous.get_next()
-    new_current = current.get_next()
-    previous.set_next(new_current)
-    return current
-
+    previous.set_next(current.get_next())
+    return current.get_data()
 
 class StackUsingUL(object):
   def __init__(self):
@@ -178,7 +186,7 @@ class StackUsingUL(object):
     Jeśli stos jest pusty, rzuca wyjątkiem IndexError.
     """
     if self.is_empty():
-      raise IndexError
+      raise IndexError('stack is empty')
     return self.items.pop(0)
 
   def peek(self):
@@ -190,8 +198,8 @@ class StackUsingUL(object):
     Jeśli stos jest pusty, rzuca wyjątkiem IndexError.
     """
     if self.is_empty():
-      raise IndexError
-    return self.items.head
+      raise IndexError('stack is empty')
+    return self.items.head.get_data()
 
   def size(self):
     """
@@ -201,3 +209,20 @@ class StackUsingUL(object):
     """
     return self.items.size()
     
+if __name__ == "__main__":
+  x = StackUsingUL()
+  print(x.is_empty())
+  x.push(1)
+  x.push(2)
+  x.push(3)
+  x.push(4)
+  x.push(5)
+  x.push(6)
+  print(x.size())
+  for i in range(x.size()):
+    print('----------------------')
+    print(x.peek())
+    print(x.pop())
+    print(x.size())
+  print('----------------------')
+  print(x.is_empty())
