@@ -1,3 +1,5 @@
+#!/usr/bin/env python 
+
 class Node:
   
   def __init__(self,init_data):
@@ -93,7 +95,7 @@ class UnorderedList(object):
     index_count = 0
     current = self.head
     if self.search(item):
-      while current != item:
+      while current.get_data() != item:
         index_count += 1
         current = current.get_next()
       return index_count
@@ -111,7 +113,7 @@ class UnorderedList(object):
     na zadanej pozycji (np. na 5. miejsce w 3-elementowej liście).
     """
     if pos<(-1)*self.size() or pos>=self.size():
-      raise IndexError
+      raise IndexError('incorrect position')
     
     if pos<0:
       pos = self.size()-pos
@@ -136,18 +138,25 @@ class UnorderedList(object):
     gdy usunięcie elementu z danej pozycji jest niemożliwe.
     """
     if pos<(-1)*self.size() or pos>=self.size():
-      raise IndexError
+      raise IndexError('icorrect position')
     
     if pos<0:
-      pos = self.size()-pos
+      pos = self.size()+pos
     
+    if pos == 0:
+      result = self.head.get_data()
+      self.head = self.head.get_next()
+      return result
+    if pos == 1:
+      result = self.head.get_next().get_data()
+      self.head.set_next(self.head.get_next().get_next())
+      return result
     previous = self.head
     for i in range(pos-1):
       previous = previous.get_next()
     current = previous.get_next()
-    new_current = current.get_next()
-    previous.set_next(new_current)
-    return current
+    previous.set_next(current.get_next())
+    return current.get_data()
 
 class DequeueUsingUL(object):
 
@@ -186,7 +195,7 @@ class DequeueUsingUL(object):
     W przypadku pustej kolejku rzuca wyjątkiem IndexError
     """
     if self.is_empty():
-      raise IndexError
+      raise IndexError('queue is empty')
     return self.items.pop(0)
     
   def remove_right(self):
@@ -197,7 +206,7 @@ class DequeueUsingUL(object):
     W przypadku pustej kolejku rzuca wyjątkiem IndexError
     """
     if self.is_empty():
-      raise IndexError
+      raise IndexError('queue is empty')
     return self.items.pop()
   
   def size(self):
@@ -208,3 +217,25 @@ class DequeueUsingUL(object):
     """
     return self.items.size()
     
+if __name__ == "__main__":
+  x = DequeueUsingUL()
+  print(x.is_empty())
+  x.add_left(1)
+  x.add_left(2)
+  x.add_left(4)
+  x.add_left(8)
+  x.add_left(16)
+  x.add_right(3)
+  x.add_right(9)
+  x.add_right(27)
+  x.add_right(81)
+  print(x.size())
+  print('-------------------------')
+  for i in range(x.size()//2):
+    print(x.remove_left())
+  print(x.is_empty())
+  print('-------------------------')
+  for i in range(x.size()):
+    print(x.remove_right())
+  print('-------------------------')
+  print(x.is_empty())
