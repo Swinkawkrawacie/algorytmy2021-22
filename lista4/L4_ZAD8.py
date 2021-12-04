@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 from L4_ZAD5 import UnorderedList
 
 if __name__ == "__main__":
-    xaxis = range(1000,2000,5)
+    xaxis = range(100,500,5)
     python_list = []
     my_list = UnorderedList()
 
@@ -74,5 +74,94 @@ if __name__ == "__main__":
     plt.show()
 
     #---------------------adding elements to the list (at the beggining)------------------------
+    on_list_time3 = []
+    on_list_time4 = []
+    #python list
+    for i in xaxis:
+        start = time.time()
+        for j in range(i):
+            python_list.insert(j,0)
+        end = time.time()
+        on_list_time3.append(end-start)
+    #my list
+    for i in xaxis:
+        start = time.time()
+        for j in range(i):
+            my_list.add(j)
+        end = time.time()
+        on_list_time4.append(end-start)
+    
+    plt.scatter(xaxis,on_list_time3, label = "python list")
+    plt.scatter(xaxis,on_list_time4, label = "my list")
+    plt.title("Adding to the list")
+    plt.legend()
+    plt.show()
+
+    plt.plot(xaxis,on_list_time3, label = "python list")
+    plt.plot(xaxis,on_list_time4, label = "my list")
+    plt.title("Adding to the list")
+    plt.legend()
+    plt.show()
     #---------------------popping elements from the beggining of the list------------------------
-    #best cominations for both
+    on_list_time3 = []
+    on_list_time4 = []
+    #python list
+    for i in xaxis:
+        start = time.time()
+        for j in range(i):
+            python_list.pop(0)
+        end = time.time()
+        on_list_time3.append(end-start)
+    #my list
+    for i in xaxis:
+        start = time.time()
+        for j in range(i):
+            my_list.pop(0)
+        end = time.time()
+        on_list_time4.append(end-start)
+    
+    plt.scatter(xaxis,on_list_time3, label = "python list")
+    plt.scatter(xaxis,on_list_time4, label = "my list")
+    plt.title("Popping from the list")
+    plt.legend()
+    plt.show()
+
+    plt.plot(xaxis,on_list_time3, label = "python list")
+    plt.plot(xaxis,on_list_time4, label = "my list")
+    plt.title("Popping from the list")
+    plt.legend()
+    plt.show()
+    #
+    #---------------------adding elements to the list (at the beggining) and popping from the beggining------------------------
+    on_list_time5 = []
+    on_list_time6 = []
+    #python list
+    for i in xaxis:
+        start = time.time()
+        for j in range(i):
+            python_list.insert(j,0)
+        for j in range(i):
+            python_list.pop(0)
+        end = time.time()
+        on_list_time5.append(end-start)
+    #my list
+    for i in xaxis:
+        start = time.time()
+        for j in range(i):
+            my_list.add(j)
+        for j in range(i):
+            my_list.pop(0)
+        end = time.time()
+        on_list_time6.append(end-start)
+    
+    plt.scatter(xaxis,on_list_time5, label = "python list")
+    plt.scatter(xaxis,on_list_time6, label = "my list")
+    plt.title("Comparison")
+    plt.legend()
+    plt.show()
+
+    plt.plot(xaxis,on_list_time5, label = "python list")
+    plt.plot(xaxis,on_list_time6, label = "my list")
+    plt.title("Comparison")
+    plt.legend()
+    plt.show()

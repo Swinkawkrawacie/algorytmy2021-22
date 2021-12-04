@@ -73,12 +73,14 @@ class UnorderedList(object):
     Przyjmuje jako argument obiekt, który ma zostać dodany.
     Niczego nie zwraca. 
     """
-    current = self.head
-    for i in range(self.size()-1):
-      current = current.get_next()
     new = Node(item)
-    current.set_next(new)
-
+    if self.size()==0:
+      self.head = new
+    else:
+      current = self.head
+      for i in range(self.size()-1):
+        current = current.get_next()
+      current.set_next(new)
     
   def index(self, item):
     """
@@ -155,11 +157,10 @@ class UnorderedList(object):
     current = previous.get_next()
     previous.set_next(current.get_next())
     return current.get_data()
-#describe errors
 
 if __name__ == "__main__":
   x = UnorderedList()
-  x.add(15)
+  x.append(15)
   x.add('kot')
   x.add(True)
   x.add(False)

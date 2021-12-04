@@ -120,36 +120,70 @@ def tour_inside(from_inside:stack, outside:QueueBaE, count=0):
     for i in range(people_out):
         inside.push(from_inside.pop())
     
-    count += 63
+    count += 63 #60s to buy and 3s to get in
 
     if not outside.is_empty():
         inside.push(outside.dequeue())
 
     return inside, outside, count
 
-if __name__ == "__main__":
+def full_test(allowed_inside:int, our_place:int):
+    """
+    Calculate time spent shopping
+
+    @param allowed_inside: (int) amount of people allowed inside the shop
+    @param our_place: (int) our position in the line
+    @return: (datetime.timedelta) time it took to do the shopping
+    """
+    #-----------------checking if data is correct----------------------
+    if not isinstance(allowed_inside,int) or not isinstance(our_place,int) or our_place<1 or allowed_inside<1 or allowed_inside>11:
+        raise ValueError('position needs to be a positive int')
+    #------------------------------------------------------------------
     inside_stack = stack()
     outside_queue = QueueBaE()
-    #we care only about or situation so we're at the end of a queue
 
-    for i in range(5):
-        inside_stack.push(0)
-    for i in range(6):
-        outside_queue.enqueue(0)
-    outside_queue.enqueue('we')
+    if our_place>allowed_inside:
+        queue_count = our_place-allowed_inside
+        queue_is = True
+    else:
+        queue_is = False
+    
+    if queue_is:
+        for i in range(allowed_inside):
+            inside_stack.push(0)
+        for i in range(queue_count-1):
+            outside_queue.enqueue(0)
+        outside_queue.enqueue('we')
+    else:
+        for i in range(our_place-1):
+            inside_stack.push(0)
+        inside_stack.push('we')
+
     count = 60 #first person just got to the front of the line
-    for i in range(12-1):
+
+    for i in range(our_place-1):
         step_one = tour_outside(inside_stack, count)
         step_two = tour_inside(step_one[0], outside_queue, step_one[1])
         count = step_two[2]
         inside_stack = step_two[0]
         outside_queue = step_two[1]
-    
-    print(inside_stack.peek())
+
+    if inside_stack.peek() == 'we' and inside_stack.size()==1:
+        print('Finally, we got out')
     step_one = tour_outside(inside_stack, count)
     count = step_one[1]
-    print(count)
-    print(datetime.timedelta(0,count))
+    return datetime.timedelta(0,count)
+
+if __name__ == "__main__":
     
-    # 60 + tour_outside + tour_inside so 63 coz it takes them 3s to get in
+    print("We are 3rd in the line")
+    first = full_test(5,3)
+    print('The time it took us: ',first)
+
+    print("We are 7th in the line")
+    first = full_test(5,7)
+    print('The time it took us: ',first)
     
+    print("We are 12th in the line")
+    first = full_test(5,12)
+    print('The time it took us: ',first)

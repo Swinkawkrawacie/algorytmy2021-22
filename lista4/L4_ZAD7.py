@@ -75,12 +75,14 @@ class UnorderedList(object):
     Przyjmuje jako argument obiekt, który ma zostać dodany.
     Niczego nie zwraca. 
     """
-    current = self.head
-    for i in range(self.size()-1):
-      current = current.get_next()
     new = Node(item)
-    current.set_next(new)
-
+    if self.size()==0:
+      self.head = new
+    else:
+      current = self.head
+      for i in range(self.size()-1):
+        current = current.get_next()
+      current.set_next(new)
     
   def index(self, item):
     """
