@@ -37,12 +37,6 @@ if __name__ == "__main__":
     plt.legend()
     plt.show()
 
-    plt.plot(xaxis,on_list_time1, label = "python list")
-    plt.plot(xaxis,on_list_time2, label = "my list")
-    plt.title("Adding to the list")
-    plt.legend()
-    plt.show()
-
     #---------------------popping elements from the list------------------------
     on_list_time1 = []
     on_list_time2 = []
@@ -63,12 +57,6 @@ if __name__ == "__main__":
     
     plt.scatter(xaxis,on_list_time1, label = "python list")
     plt.scatter(xaxis,on_list_time2, label = "my list")
-    plt.title("Popping from the list")
-    plt.legend()
-    plt.show()
-
-    plt.plot(xaxis,on_list_time1, label = "python list")
-    plt.plot(xaxis,on_list_time2, label = "my list")
     plt.title("Popping from the list")
     plt.legend()
     plt.show()
@@ -97,11 +85,6 @@ if __name__ == "__main__":
     plt.legend()
     plt.show()
 
-    plt.plot(xaxis,on_list_time3, label = "python list")
-    plt.plot(xaxis,on_list_time4, label = "my list")
-    plt.title("Adding to the list")
-    plt.legend()
-    plt.show()
     #---------------------popping elements from the beggining of the list------------------------
     on_list_time3 = []
     on_list_time4 = []
@@ -126,13 +109,7 @@ if __name__ == "__main__":
     plt.legend()
     plt.show()
 
-    plt.plot(xaxis,on_list_time3, label = "python list")
-    plt.plot(xaxis,on_list_time4, label = "my list")
-    plt.title("Popping from the list")
-    plt.legend()
-    plt.show()
-    #
-    #---------------------adding elements to the list (at the beggining) and popping from the beggining------------------------
+    #---------------------best cominations for my list(adding elements to the list at the beggining and popping from the beggining)------------------------
     on_list_time5 = []
     on_list_time6 = []
     #python list
@@ -156,12 +133,6 @@ if __name__ == "__main__":
     
     plt.scatter(xaxis,on_list_time5, label = "python list")
     plt.scatter(xaxis,on_list_time6, label = "my list")
-    plt.title("Comparison")
-    plt.legend()
-    plt.show()
-
-    plt.plot(xaxis,on_list_time5, label = "python list")
-    plt.plot(xaxis,on_list_time6, label = "my list")
     plt.title("Comparison")
     plt.legend()
     plt.show()
