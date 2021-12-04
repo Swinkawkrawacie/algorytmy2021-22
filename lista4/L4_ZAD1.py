@@ -41,8 +41,7 @@ class QueueBaB(object):
     Nie pobiera argumentów.
     Zwraca liczbę obiektów w kolejce.
     """
-    return len(self.list_of_items)
-    
+    return len(self.list_of_items) 
   
 class QueueBaE(object):
   """

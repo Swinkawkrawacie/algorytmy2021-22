@@ -115,7 +115,3 @@ if __name__ == "__main__":
     plt.plot(xaxis,[list_time1[i]-list_time2[i] for i in range(len(list_time1))], label = "BaB")
     plt.title("comparison (BaB time - BaE time)")
     plt.show()
-
-    # maybe add some functions???
-
-    

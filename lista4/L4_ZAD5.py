@@ -16,8 +16,7 @@ class Node:
     self.data = new_data
   
   def set_next(self,new_next):
-    self.next = new_next
-    
+    self.next = new_next 
 
 class UnorderedList(object):
   
