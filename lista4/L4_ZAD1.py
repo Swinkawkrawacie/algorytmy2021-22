@@ -85,32 +85,3 @@ class QueueBaE(object):
     Zwraca liczbę obiektów w kolejce.
     """
     return len(self.list_of_items)
-
-if __name__ == "__main__":
-  print('------------------------first----------------------------')
-  x = QueueBaB()
-  x.enqueue(15)
-  x.enqueue('kot')
-  x.enqueue(True)
-  x.enqueue(None)
-  print(x.list_of_items)
-  print(x.size())
-  print(x.is_empty())
-  for i in range(x.size()):
-    print(x.dequeue())
-    print(x.list_of_items)
-  print(x.is_empty())
-
-  print("------------------------second------------------------")
-  x = QueueBaE()
-  x.enqueue(15)
-  x.enqueue('kot')
-  x.enqueue(True)
-  x.enqueue(None)
-  print(x.list_of_items)
-  print(x.size())
-  print(x.is_empty())
-  for i in range(x.size()):
-    print(x.dequeue())
-    print(x.list_of_items)
-  print(x.is_empty())

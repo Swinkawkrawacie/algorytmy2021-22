@@ -156,38 +156,3 @@ class UnorderedList(object):
     current = previous.get_next()
     previous.set_next(current.get_next())
     return current.get_data()
-
-if __name__ == "__main__":
-  x = UnorderedList()
-  x.append(15)
-  x.add('kot')
-  x.add(True)
-  x.add(False)
-  x.append(5)
-  x.append(32)
-  print(x.size())
-  print(x.is_empty())
-  current = x.head
-  print("---------------------------")
-  print(current.data)
-  for i in range(x.size()-1):
-    current = current.get_next()
-    print(current.data)
-  print("---------------------------")
-  print(x.index(32))
-  print(x.index('kot'))
-  print(x.index(7))
-  print("---------------------------")
-  print(x.insert(3,2))
-  current = x.head
-  print("---------------------------")
-  print(current.data)
-  for i in range(x.size()-1):
-    current = current.get_next()
-    print(current.data)
-  print("---------------------------")
-  print(x.pop())
-  print(x.pop(0))
-  print(x.pop(-5))
-  print(x.pop(1))
-# 1==True

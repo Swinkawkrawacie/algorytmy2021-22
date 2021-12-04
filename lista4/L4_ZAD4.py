@@ -85,9 +85,3 @@ def checking_HTML_correctness(filename):
         return True
     else:
         return False
-
-if __name__ == "__main__":
-    print('first text, correct:',checking_HTML_correctness('L4_ZAD4_sampleHTML_1.txt'))
-    print('second text, correct:',checking_HTML_correctness('L4_ZAD4_sampleHTML_2.txt'))
-    print('third text, correct:',checking_HTML_correctness('L4_ZAD4_sampleHTML_3.txt'))
-    # " " at the beggining

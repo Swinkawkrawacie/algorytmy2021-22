@@ -218,26 +218,3 @@ class DequeueUsingUL(object):
     Zwraca liczbę elementów na w kolejce.
     """
     return self.items.size()
-    
-if __name__ == "__main__":
-  x = DequeueUsingUL()
-  print(x.is_empty())
-  x.add_left(1)
-  x.add_left(2)
-  x.add_left(4)
-  x.add_left(8)
-  x.add_left(16)
-  x.add_right(3)
-  x.add_right(9)
-  x.add_right(27)
-  x.add_right(81)
-  print(x.size())
-  print('-------------------------')
-  for i in range(x.size()//2):
-    print(x.remove_left())
-  print(x.is_empty())
-  print('-------------------------')
-  for i in range(x.size()):
-    print(x.remove_right())
-  print('-------------------------')
-  print(x.is_empty())
