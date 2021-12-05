@@ -6,7 +6,10 @@ Zaprojektuj i przeprowadź eksperyment porównujący wydajność listy jednokier
 
 import time
 from matplotlib import pyplot as plt
+from L4_ZAD4 import stack
 from L4_ZAD5 import UnorderedList
+from L4_ZAD6 import StackUsingUL
+
 
 if __name__ == "__main__":
     xaxis = range(100,500,5)
@@ -136,3 +139,34 @@ if __name__ == "__main__":
     plt.title("Comparison")
     plt.legend()
     plt.show()
+
+    #---------------------stack(adding and popping)------------------------
+    on_list_time7 = []
+    on_list_time8 = []
+    #python list
+    python_stack = stack()
+    for i in xaxis:
+        start = time.time()
+        for j in range(i):
+            python_stack.push(j)
+        for j in range(i):
+            python_stack.pop()
+        end = time.time()
+        on_list_time7.append(end-start)
+    #my list
+    my_stack = StackUsingUL()
+    for i in xaxis:
+        start = time.time()
+        for j in range(i):
+            my_stack.push(j)
+        for j in range(i):
+            my_stack.pop()
+        end = time.time()
+        on_list_time8.append(end-start)
+    
+    plt.scatter(xaxis,on_list_time7, label = "python list")
+    plt.scatter(xaxis,on_list_time8, label = "my list")
+    plt.title("Stacks")
+    plt.legend()
+    plt.show()
+    
