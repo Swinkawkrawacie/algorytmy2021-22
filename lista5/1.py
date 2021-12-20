@@ -3,12 +3,11 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy import linalg
-import random
 import time
 import math
 import os
 
-def solve_random(n, numbers=4):
+def solve_random(n):
     """
     Time linalg.solve for n variables
 
@@ -17,9 +16,9 @@ def solve_random(n, numbers=4):
     @return: (float) time taken to solve
     """
     #--------------------checking data--------------------------
-    if not isinstance(n, int) or not isinstance(numbers, int):
+    if not isinstance(n, int):
         raise TypeError('type of given data is incorrect')
-    if n<2 or numbers<=2:
+    if n<2:
         raise ValueError('value of given data is incorrect')
     #-----------------------------------------------------------
     A = np.random.random((n,n))
