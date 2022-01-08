@@ -246,4 +246,4 @@ if __name__ == "__main__":
     diff = diff_tree(tree1)
     diff.diff()
     print(diff)
-    #print(diff.printexp())
+    print(diff.printexp())
