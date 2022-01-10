@@ -1,6 +1,9 @@
 #!/usr/bin/env python 
 
 class BinaryTree():
+    """
+    Binary search tree
+    """
     def __init__(self):
         self.data = None
         self.count = 0
@@ -8,18 +11,63 @@ class BinaryTree():
         self.right = None
     
     def set_data(self, value):
+        """
+        Set value in the node
+
+        @param value: data to put in the node
+        """
+        #------------------checking data--------------------
+        if not isinstance(value, int):
+            raise TypeError('data should be an integer')
+        #---------------------------------------------------
         self.data = value
     def set_count(self, value):
+        """
+        Set count of the specific value
+
+        @param value: count of the data in the node
+        """
+        #------------------checking data--------------------
+        if not isinstance(value, int):
+            raise TypeError('data should be an integer')
+        #---------------------------------------------------
         self.count = value
     def set_left(self, item):
+        """
+        Set count of the left child
+
+        @param item: the left child
+        """
+        #------------------checking data--------------------
+        if not (isinstance(item, BinaryTree) or isinstance(item, None)):
+            raise TypeError('data should be an integer')
+        #---------------------------------------------------
         self.left = item
     def set_right(self, item):
+        """
+        Set count of the right child
+
+        @param item: the right child
+        """
+        #------------------checking data--------------------
+        if not (isinstance(item, BinaryTree) or item == None):
+            raise TypeError('data should be an integer')
+        #---------------------------------------------------
         self.right = item
     
     def __str__(self):
         return str(self.data) + '\n' + str(self.left) + '\t' + str(self.right)
     
     def insert(self, value):
+        """
+        Insert a new element
+
+        @param value: number to add to the tree
+        """
+        #------------------checking data--------------------
+        if not isinstance(value, int):
+            raise TypeError('data should be an integer')
+        #---------------------------------------------------
         new = BinaryTree()
         new.set_data(value)
         new.set_count(1)
@@ -42,18 +90,34 @@ class BinaryTree():
             self.set_count(1)
     
     def get_min(self):
+        """
+        Get the minimum on the tree
+        """
         if self.left == None:
             return self.data
         else:
             return self.left.get_min()
     
-    def get_max(self, last=None):
+    def get_max(self):
+        """
+        Get the maximum on the tree
+        """
         if self.right == None:
             return self.data
         else:
             return self.right.get_max()
     
     def exists(self, value):
+        """
+        Check if the value is on the tree
+
+        @param value: (int) the value to find
+        @return: (bool) True/False if the element was found/not found
+        """
+        #------------------checking data--------------------
+        if not isinstance(value, int):
+            raise TypeError('data should be an integer')
+        #---------------------------------------------------
         found = False
         current = self
         while current.data != None and not found:
@@ -66,6 +130,16 @@ class BinaryTree():
         return found
     
     def get_successor(self, value):
+        """
+        get a successor after deleting given value
+
+        @param value: (int) the value to delete
+        @return: (int) value of the successor
+        """
+        #------------------checking data--------------------
+        if not isinstance(value, int):
+            raise TypeError('data should be an integer')
+        #---------------------------------------------------
         current = self
         if self.exists(value):
             while current.data != None:
@@ -86,6 +160,16 @@ class BinaryTree():
             return None
     
     def get_item(self, value):
+        """
+        Get the item with given value
+
+        @param value: (int) value of the searched element
+        @return: (BinaryTree) searched item
+        """
+        #------------------checking data--------------------
+        if not isinstance(value, int):
+            raise TypeError('data should be an integer')
+        #---------------------------------------------------
         current = self
         if self.exists(value):
             while current.data != None:
@@ -95,8 +179,20 @@ class BinaryTree():
                     current = current.left
                 else:
                     return current
+        else:
+            raise ValueError('the item is not on the tree')
     
     def delete(self, value):
+        """
+        Delete given value from the tree
+
+        @param value: (int) value to delete
+        @return: (BinaryTree) current tree state
+        """
+        #------------------checking data--------------------
+        if not isinstance(value, int):
+            raise TypeError('data should be an integer')
+        #---------------------------------------------------
         current = self
         if self.exists(value):
             while current.data != None:
@@ -141,24 +237,41 @@ class BinaryTree():
                         current.set_data(new_value)
                         current.set_count(new_count)
                         return tree
+        else:
+            return self
     
     def preorder(self):
+        """
+        Print tree in preorder
+        """
         if self != None:
             print(self.data)
-            self.left.preorder()
-            self.right.preorder()
+            if self.left != None:
+                self.left.preorder()
+            if self.right != None:
+                self.right.preorder()
     
     def postorder(self):
+        """
+        Print tree in postorder
+        """
         if self != None:
-            self.left.postorder()
-            self.right.postorder()
+            if self.left != None:
+                self.left.postorder()
+            if self.right != None:
+                self.right.postorder()
             print(self.data)
     
     def inorder(self):
+        """
+        Print tree in inorder
+        """
         if self != None:
-            self.left.inorder()
+            if self.left != None:
+                self.left.inorder()
             print(self.data)
-            self.right.inorder()
+            if self.right != None:
+                self.right.inorder()
 
 
 if __name__ == "__main__":
@@ -180,5 +293,7 @@ if __name__ == "__main__":
     print(tree.delete(3))
     print('----------------------')
     tree.preorder()
+    print('----------------------')
     tree.postorder()
+    print('----------------------')
     tree.inorder()
