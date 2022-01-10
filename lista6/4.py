@@ -153,25 +153,31 @@ class diff_tree():
             normal_right = diff_tree(current.right, self.operand)
             normal_right.put()
             self.right.left = normal_right
-            self.right.right = '2'
+            self.right.right = diff_tree(current, self.operand)
+            self.right.right.data = '2'
         elif current.data == '^':
             self.data = '*'
             normal_right = diff_tree(current.right, self.operand)
             normal_right.put()
             self.left = normal_right
             self.right = diff_tree(current, self.operand)
-            self.right.data = '^'
+            self.right.data = '*'
+            right_child = diff_tree(current.left, self.operand)
+            right_child.diff()
+            self.right.right = right_child
+            self.right.left = diff_tree(current,self.operand)
+            self.right.left.data = '^'
             left_child = diff_tree(current.left, self.operand)
-            left_child.diff()
-            self.right.left = left_child
+            left_child.put()
+            self.right.left.left = left_child
             normal_right = diff_tree(current.right, self.operand)
             normal_right.put()
-            self.right.right = normal_right
+            self.right.left.right = normal_right
             try:
-                int(self.right.right.data)
+                int(self.right.left.right.data)
             except:
                 raise ValueError('incorrect expression')
-            self.right.right.data = str(int(self.right.right.data)-1)
+            self.right.left.right.data = str(int(self.right.left.right.data)-1)
         elif current.data == 'sin':
             self.data = '*'
             self.left = diff_tree(current, self.operand)
