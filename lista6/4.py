@@ -172,6 +172,7 @@ class diff_tree():
             except:
                 raise ValueError('incorrect expression')
             self.right.right.data = str(int(self.right.right.data)-1)
+        elif current.data == 'sin':
             self.data = '*'
             self.left = diff_tree(current, self.operand)
             self.left.data = 'cos'
@@ -185,7 +186,7 @@ class diff_tree():
         elif current.data == 'cos':
             self.data = '*'
             self.left = diff_tree(current, self.operand)
-            self.left.data = -1
+            self.left.data = '-1'
             self.right = diff_tree(current, self.operand)
             self.right.data = '*'
             self.right.left = diff_tree(current, self.operand)
@@ -231,17 +232,20 @@ class diff_tree():
 
         @return: (str) the final expression
         """
-        result = ''
+        result = []
         if self == None:
             return result
+        result.append('(')
         if self.data in ['sin', 'cos', 'ln', 'exp']:
-            result = self.data + self.left.printexp()
+            result.append(self.data)
+            result.extend(self.left.printexp())
         else:
             if self.left != None:
-                result += '(' + self.left.printexp() + ')'
-            result += self.data
+                result.extend(self.left.printexp())
+            result.append(self.data)
             if self.right != None:
-                result += '(' + self.right.printexp()+')'
+                result.extend(self.right.printexp())
+        result.append(')')
         return result
 
 def diff_exp(base_tree, operand):
@@ -264,22 +268,45 @@ def diff_exp(base_tree, operand):
     while n < len(text):
         try:
             int(text[n])
-            final_form = final_form[:-1] + text[n]
-            n += 2
+            if int(text[n]) >= 0:
+                final_form = final_form[:-1]+text[n]
+                n += 2
+            else:
+                final_form += text[n]
+                n += 1
         except:
-            final_form += text[n]
-            n += 1 
+            if text[n] == operand:
+                final_form = final_form[:-1]+text[n]
+                n += 2
+            elif text[n] in ['sin', 'cos', 'exp', 'ln']:
+                current = text[n:].index(')') + n
+                start_count = text[n:current].count('(')
+                while start_count > 0:
+                    previous = current
+                    current += text[current:].index(')')+1
+                    start_count -= 1
+                    start_count += text[previous:current].count('(')
+                text[current] = ''
+                final_form = final_form[:-1]+text[n]
+                n += 1
+            else:
+                final_form += text[n]
+                n += 1
     return final_form
 
 if __name__ == "__main__":
+    print('(((3+5)*4)*sin(x+1))', '\nx')
     tree = parse_tree('(((3+5)*4)*sin(x+1))', 'x')
     print(diff_exp(tree, 'x'))
     print('----------------------------------------')
-    tree1 = parse_tree('(sin(x+5)*4)', 'x')
-    print(diff_exp(tree1, 'x'))
+    print('(exp(a+5)*4)', '\na')
+    tree1 = parse_tree('(exp(a+5)*4)', 'a')
+    print(diff_exp(tree1, 'a'))
     print('----------------------------------------')
-    tree2 = parse_tree('(4*sin(x+5))', 'x')
-    print(diff_exp(tree2, 'x'))
+    print('(4*cos(y+5))', '\ny')
+    tree2 = parse_tree('(4*cos(y+5))', 'y')
+    print(diff_exp(tree2, 'y'))
     print('--------------------')
-    tree3 = parse_tree('(4+(5*x))', 'x')
-    print(diff_exp(tree3, 'x'))
+    print('ln(5*n)', '\nn')
+    tree3 = parse_tree('ln(5*n)', 'n')
+    print(diff_exp(tree3, 'n'))
