@@ -10,13 +10,15 @@ class parse_tree():
         if isinstance(text,str):
             operand_list = []
             while len(text)>0:
-                for j in ['sin', 'cos', 'exp']:
-                    if text[:3] == j:
-                        operand_list.append(j)
-                        text = text[3:]
+                if text[:3] in ['sin', 'cos', 'exp']:
+                    operand_list.append(text[:3])
+                    text = text[3:]
                 if text[:2] == 'ln':
                     operand_list.append('ln')
                     text = text[2:]
+                if text[:2] == '(-':
+                    operand_list.append(text[1:3])
+                    text = text[4:]
                 operand_list.append(text[0])
                 text = text[1:]
         elif isinstance(text, list):
@@ -313,6 +315,6 @@ if __name__ == "__main__":
     tree2 = parse_tree('(4*cos(y+5))', 'y')
     print(diff_exp(tree2, 'y'))
     print('--------------------')
-    print('ln(5*n)', '\nn')
-    tree3 = parse_tree('ln(5*n)', 'n')
+    print('ln((-5)*n)', '\nn')
+    tree3 = parse_tree('ln((-5)*n)', 'n')
     print(diff_exp(tree3, 'n'))
