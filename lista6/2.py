@@ -170,6 +170,10 @@ def time_sort(n):
 
     @return: (float) time of the operation
     """
+    if not isinstance(n, int):
+        raise TypeError('amount of elements on the list needs to be an integer')
+    if n <= 0:
+        raise ValueError('amount of elements on the list needs to be positive')
     data = [random.randint(-100,100) for i in range(n)]
     start = time.process_time()
     heap_sort(data)
