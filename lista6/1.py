@@ -166,7 +166,13 @@ class BinarySearchTree:
             return self._get(key,currentNode.rightChild)
 
     def __getitem__(self,key): #overloading of [] operator
-        return self.get(key)        
+        return self.get(key)
+
+    def get_count(self,key):
+        if self.__getitem__(key):
+            return self._get(key, self.root).count  
+        else:
+            return 0      
 
     def __contains__(self,key):  # overloading of in operator
         if self._get(key,self.root):
@@ -176,7 +182,6 @@ class BinarySearchTree:
        
     def delete(self,key):
         if self._get(key,self.root):
-            print(self._get(key,self.root).count)
             if self._get(key,self.root).count == 1:
                 if self.size > 1:
                     nodeToRemove = self._get(key,self.root)
@@ -298,18 +303,33 @@ class BinarySearchTree:
 
 if __name__ == "__main__":
     tree = BinarySearchTree()
-    tree[5]='kot'
-    tree[7]='doggo'
-    tree[-1] = 'oink'
-    tree[3] = 'kwak'
-    tree[7] = 'woof'
-    print(tree)
-    print('----------------------')
-    tree.delete(5)
-    print(tree[5])
-    print('----------------------')
-    tree.delete(7)
-    print(tree[7])
-    print('----------------------')
-    print(tree)
+    keys = [5,7,-1,3,0,4,2]
+    values = ['meow', 'doggo', 'piglet', 'duck', 'oink', 'cat', 'kwak']
+    for i in range(len(keys)):
+        tree[keys[i]] = values[i]
     print(tree.print_keys())
+    print('----------------------')
+    print(tree)
+    print('\ncounter for 7:', tree.get_count(7))
+    print('----------------------')
+    tree[7] = 'woof'
+    print(tree.print_keys())
+    print('----------------------')
+    print(tree)
+    print('\ncounter for 7:', tree.get_count(7))
+    print('----------------------')
+    print('delete 5')
+    tree.delete(5)
+    print('\ncounter for 5:', tree.get_count(5))
+    print('----------------------')
+    print(tree.print_keys())
+    print('----------------------')
+    print(tree)
+    print('----------------------')
+    print('delete 7')
+    tree.delete(7)
+    print('\ncounter for 7:', tree.get_count(7))
+    print('----------------------')
+    print(tree.print_keys())
+    print('----------------------')
+    print(tree)
