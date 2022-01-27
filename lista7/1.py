@@ -330,27 +330,108 @@ def find_fastest(graph1:Graph, start):
             result = result[::-1]
             print('\n for ',i,': ',result)
 
+def mis_can(mis = 3, can = 3, bank = 1):
+    graph_mis_can = Graph()
+    for i in range(4):
+        for j in range(4):
+            for k in range(2):
+                graph_mis_can.addVertex((i,j,k))
+    for i in list(graph_mis_can.vertList.keys()):
+        if i[2]==1:
+            if (i[0]>i[1] and i[0]-1>=0) or i[0]==1:
+                graph_mis_can.addEdge(i, (mis+1-i[0],can-i[1],0))
+            if (i[0]-1>i[1] and i[0]-2>=0) or i[0]==2:
+                    graph_mis_can.addEdge(i, (mis+2-i[0],can-i[1],0))
+            if (i[0]>=i[1] and i[0]-1>=0 and i[1]-1>=0) or i[0]==1:
+                graph_mis_can.addEdge(i, (mis+1-i[0],can+1-i[1],0))
+            if i[1]>0:
+                graph_mis_can.addEdge(i, (mis-i[0],can+1-i[1],0))
+                if i[1]-1>0:
+                    graph_mis_can.addEdge(i, (mis-i[0],can+2-i[1],0))
+        else:
+            if (i[0]>i[1] and i[0]-1>=0) or i[0]==1:
+                graph_mis_can.addEdge(i, (mis+1-i[0],can-i[1],1))
+            if (i[0]-1>i[1] and i[0]-2>=0) or i[0]==2:
+                    graph_mis_can.addEdge(i, (mis+2-i[0],can-i[1],1))
+            if (i[0]>=i[1] and i[0]-1>=0 and i[1]-1>=0) or i[0]==1:
+                graph_mis_can.addEdge(i, (mis+1-i[0],can+1-i[1],1))
+            if i[1]>0:
+                graph_mis_can.addEdge(i, (mis-i[0],can+1-i[1],1))
+                if i[1]-1>0:
+                    graph_mis_can.addEdge(i, (mis-i[0],can+2-i[1],1))
+    graph_mis_can.bfs(graph_mis_can.getVertex((mis,can,1)))
+    move_list = graph_mis_can.traverse(graph_mis_can.getVertex((mis,can,0)))[::-1]
+    if len(move_list) <= 1:
+        raise ValueError('can\'t calculate from this number')
+    return move_list
+
+def litres(base1 = 3, base2 = 4, goal = 2):
+    graph_litres = Graph()
+    for i in range(base1+1):
+        for j in range(base2+1):
+            graph_litres.addVertex((i,j))
+    for i in list(graph_litres.vertList.keys()):
+        if i[0]>0:
+            graph_litres.addEdge(i, (0,i[1]))
+            graph_litres.addEdge(i, (base1,i[1]))
+            if i[0]+i[1]<=base2:
+                graph_litres.addEdge(i, (0,i[0]+i[1]))
+            else:
+                graph_litres.addEdge(i, (i[0]+i[1]-base2,base2))
+        if i[0]==0:
+            graph_litres.addEdge(i, (base1,i[1]))
+        if i[1]>0:
+            graph_litres.addEdge(i, (i[0],0))
+            graph_litres.addEdge(i, (i[0],base2))
+            if i[0]+i[1]<=base1:
+                graph_litres.addEdge(i, (i[0]+i[1],0))
+            else:
+                graph_litres.addEdge(i, (base1,i[0]+i[1]-base1))
+        if i[1]==0:
+            graph_litres.addEdge(i, (i[0],base2))
+    graph_litres.bfs(graph_litres.getVertex((0,0)))
+    move_list = []
+    for i in range(base2+1):
+        move_list.append(graph_litres.traverse(graph_litres.getVertex((goal,i))))
+    for i in range(base1+1):
+        move_list.append(graph_litres.traverse(graph_litres.getVertex((i,goal))))
+    move_list.sort(key=lambda x: len(x))
+    found = False
+    n = 0
+    while not found and n<len(move_list):
+        if len(move_list[n])>1:
+            found = True
+            result = move_list[n]
+        n += 1
+
+    if found:
+        return result[::-1]
+    else:
+        raise ValueError('can\'t measure this amount')
+
 
 if __name__ == '__main__':
-    gr1 = Graph()
-    for i in range(6):
-        gr1.addVertex(i)
-    gr1.addEdge(0,1,5)
-    gr1.addEdge(0,5,2)
-    gr1.addEdge(1,2,4)
-    gr1.addEdge(2,3,9)
-    gr1.addEdge(3,4,1)
-    gr1.addEdge(3,5,3)
-    gr1.addEdge(4,0,1)
-    gr1.addEdge(4,5,1)
-    gr1.addEdge(5,2,1)
+#    gr1 = Graph()
+ #   for i in range(6):
+  #      gr1.addVertex(i)
+   # gr1.addEdge(0,1,5)
+    #gr1.addEdge(0,5,2)
+#    gr1.addEdge(1,2,4)
+ #   gr1.addEdge(2,3,9)
+  #  gr1.addEdge(3,4,1)
+   # gr1.addEdge(3,5,3)
+    #gr1.addEdge(4,0,1)
+#    gr1.addEdge(4,5,1)
+ #   gr1.addEdge(5,2,1)
 
-#    print(gr1.getEdges())
- #   print(gr1.graph_dot())
-  #  print(gr1.getVertex(5))
+  #  print(gr1.getEdges())
+   # print(gr1.graph_dot())
+    #print(gr1.getVertex(5))
 #    gr1.bfs(gr1.getVertex(1))
  #   print(gr1.getVertex(5))
   #  print(gr1.traverse(gr1.getVertex(5)))
-   # print(gr1.dfs())
-    find_fastest(gr1, 2)
+    #print(gr1.dfs())
+    #find_fastest(gr1, 2)
+    print(mis_can())
+    print(litres())
     
