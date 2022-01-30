@@ -140,11 +140,11 @@ class Vertex:
     def __init__(self,num):
         self.id = num
         self.connectedTo = {}
-        self.color = 'white'       #new: color of node
-        self.dist = sys.maxsize    #new: distance from beginning (will be used later)
-        self.pred = None           #new: predecessor
-        self.disc = 0              #new: discovery time
-        self.fin = 0               #new: end-of-processing time
+        self.color = 'white'       
+        self.dist = sys.maxsize    
+        self.pred = None           
+        self.disc = 0              
+        self.fin = 0               
 
     def addNeighbor(self,nbr,weight=0):
         self.connectedTo[nbr] = weight
@@ -246,18 +246,18 @@ class Graph:
             i.setColor('white')
             i.setDistance(0)
             i.setPred(None)
-        start.setDistance(0)                            #distance 0 indicates it is a start node
-        start.setPred(None)                             #no predecessor at start
+        start.setDistance(0)                            
+        start.setPred(None)                             
         vertQueue = Queue()
-        vertQueue.enqueue(start)                        #add start to processing queue
+        vertQueue.enqueue(start)                        
         while (vertQueue.size() > 0):
-            currentVert = vertQueue.dequeue()           #pop next node to process -> current node
-            for nbr in currentVert.getConnections():    #check all neighbors of the current node
-                if (nbr.getColor() == 'white'):         #if the neighbor is white
+            currentVert = vertQueue.dequeue()           
+            for nbr in currentVert.getConnections():    
+                if (nbr.getColor() == 'white'):         
                     nbr.setColor('gray')
-                    nbr.setDistance(currentVert.getDistance() + 1)   #set its distance
-                    nbr.setPred(currentVert)                         #current node is its predecessor
-                    vertQueue.enqueue(nbr)                           #add it to the queue
+                    nbr.setDistance(currentVert.getDistance() + 1)   
+                    nbr.setPred(currentVert)                         
+                    vertQueue.enqueue(nbr)                           
             currentVert.setColor('black')
         
     def traverse(self, y):
@@ -273,15 +273,19 @@ class Graph:
             return  
     
     def dfs(self):
+        self.time = 0
         for aVertex in self:
             aVertex.setColor('white')
             aVertex.setPred(-1)
         for aVertex in self:
             if aVertex.getColor() == 'white':
                 self.dfsvisit(aVertex)
+    
+    def sort_top(self):
+        self.dfs()
         possible = True
-        times = [(i,self.vertList[i].getFinish()-self.vertList[i].getDiscovery()) for i in self.vertList.keys()]
-        times.sort(key = lambda x: x[1])
+        times = [(i,self.vertList[i].getFinish()) for i in self.vertList.keys()]
+        times.sort(reverse=True, key = lambda x: x[1])
         result = []
         for i in times:
             result.append(i[0])
@@ -323,14 +327,38 @@ class Graph:
                     pq.decreaseKey(nextVert,newDist)
 
 def find_fastest(graph1:Graph, start):
+    """
+    Find fastest paths to every element from the start
+
+    @graph1: (Graph) graph to analyze
+    @start: key to start from
+    @return: (dict) dictionary of pairs the key and the path
+    """
+    if not (start in graph1.vertList.keys()):
+        raise ValueError()
     graph1.dijkstra(graph1.getVertex(start))
     result={}
     for i in list(graph1.vertList.keys()):
         if i != start:
-            result[i] = graph1.traverse(graph1.getVertex(i))
+            short_path = graph1.traverse(graph1.getVertex(i))
+            if len(short_path)>1:
+                result[i] = short_path
+    if result == {}:
+        raise ValueError('there are no connections from this element')
     return result
 
-def mis_can(mis = 3, can = 3, bank = 1):
+def mis_can(mis = 3, can = 3):
+    """
+    Solve the missioniaries and cannibals problem
+
+    @mis: (int) number of missionaries
+    @can: (int) number of cannibals
+    @return: (list) list of moves to solve the problem
+    """
+    if not (isinstance(mis,int) and isinstance(can, int)):
+        raise TypeError('number of people has to be an integer')
+    if mis <=0 or can <=0:
+        raise ValueError('number of people has to be positive')
     graph_mis_can = Graph()
     for i in range(4):
         for j in range(4):
@@ -360,12 +388,21 @@ def mis_can(mis = 3, can = 3, bank = 1):
                 if i[1]-1>0:
                     graph_mis_can.addEdge(i, (mis-i[0],can+2-i[1],1))
     graph_mis_can.bfs(graph_mis_can.getVertex((mis,can,1)))
-    move_list = graph_mis_can.traverse(graph_mis_can.getVertex((mis,can,0)))[::-1]
+    move_list = graph_mis_can.traverse(graph_mis_can.getVertex((mis,can,0)))
     if len(move_list) <= 1:
         raise ValueError('can\'t calculate from this number')
+    
     return move_list
 
 def litres(base1 = 3, base2 = 4, goal = 2):
+    """
+    Measure given amount of litres
+
+    @base1: (int) capacity of the first container
+    @base2: (int) capacity of the second container
+    @goal: (int) amount to measure
+    @return: (list) list of moves to solve the problem
+    """
     graph_litres = Graph()
     for i in range(base1+1):
         for j in range(base2+1):
@@ -405,7 +442,7 @@ def litres(base1 = 3, base2 = 4, goal = 2):
         n += 1
 
     if found:
-        return result[::-1]
+        return result
     else:
         raise ValueError('can\'t measure this amount')
 
@@ -424,21 +461,52 @@ if __name__ == '__main__':
     gr1.addEdge(4,5,1)
     gr1.addEdge(5,2,1)
 
-    print(gr1.getEdges())
+    gr2 = Graph()
+    for i in range(1,9):
+        gr2.addVertex(i)
+    gr2.addEdge(1,4)
+    gr2.addEdge(2,4)
+    gr2.addEdge(3,4)
+    gr2.addEdge(4,6)
+    gr2.addEdge(4,9)
+    gr2.addEdge(5,6)
+    gr2.addEdge(6,7)
+    gr2.addEdge(7,8)
+    gr2.addEdge(9,8)
+
+    #---------------DOT------------------
+    print('\ngraph 1:\n')
     print(gr1.graph_dot())
-    print(gr1.getVertex(5))
-    gr1.bfs(gr1.getVertex(3))
-    print(gr1.getVertex(5))
-    print(gr1.traverse(gr1.getVertex(1)))
-    gr1.bfs(gr1.getVertex(3))
-    print(gr1.traverse(gr1.getVertex(1)))
-    #print(gr1.dfs())
+    print('\ngraph 2:\n')
+    print(gr2.graph_dot())
+    print('\n')
+    #---------topological sort-----------
+    print('\ngraph 2:\n')
+    print(gr2.sort_top())
+    print('\ngraph 1:\n')
+    print(gr1.sort_top())
+    #-------finding short paths----------
+    print('\ngraph 1:\nbase: 2\n')
     result1 = find_fastest(gr1, 2)
     for i in result1.keys():
         print(i, ': ', result1[i])
+    print('\nbase: 5\n')
     result2 = find_fastest(gr1,5)
     for i in result2.keys():
         print(i, ': ', result2[i])
+    print('\ngraph 2:\nbase: 3\n')
+    result3 = find_fastest(gr2, 3)
+    for i in result3.keys():
+        print(i, ': ', result3[i])
+    print('\nbase: 8\n')
+    result4 = find_fastest(gr2,8)
+    for i in result4.keys():
+        print(i, ': ', result4[i])
+    #----missionaries and cannibals-----
+    print('\n')
     print(mis_can())
+    #------------measure 2l-------------
+    print('\n')
     print(litres())
+    
     
