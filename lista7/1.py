@@ -128,12 +128,13 @@ class BinHeap:
         return str([(self.elements[i],self.atributes[i]) for i in range(1,self.heap_size)])
     
     def decreaseKey(self, element, new_key):
-        idx = self.atributes.index(element)
-        self.elements[idx] = new_key
-        data = []
-        for i in range(1,len(self.elements)):
-            data.append((self.elements[i],self.atributes[i]))
-        self.buildHeap(data)
+        if element in self.atributes:
+            idx = self.atributes.index(element)
+            self.elements[idx] = new_key
+            data = []
+            for i in range(1,len(self.elements)):
+                data.append((self.elements[i],self.atributes[i]))
+            self.buildHeap(data)
 
 class Vertex:
     def __init__(self,num):
@@ -240,23 +241,24 @@ class Graph:
             result += str(i[0]) + '->' + str(i[1]) + ';'
         return result + '}'
 
-    def bfs(self,start:Vertex, weights=False):
-        if not weights:
-            start.setDistance(0)                            #distance 0 indicates it is a start node
-            start.setPred(None)                             #no predecessor at start
-            vertQueue = Queue()
-            vertQueue.enqueue(start)                        #add start to processing queue
-            while (vertQueue.size() > 0):
-                currentVert = vertQueue.dequeue()           #pop next node to process -> current node
-                for nbr in currentVert.getConnections():    #check all neighbors of the current node
-                    if (nbr.getColor() == 'white'):         #if the neighbor is white
-                        nbr.setColor('gray')
-                        nbr.setDistance(currentVert.getDistance() + 1)   #set its distance
-                        nbr.setPred(currentVert)                         #current node is its predecessor
-                        vertQueue.enqueue(nbr)                           #add it to the queue
-                currentVert.setColor('black')
-        else:
-            pass
+    def bfs(self,start:Vertex):
+        for i in self:
+            i.setColor('white')
+            i.setDistance(0)
+            i.setPred(None)
+        start.setDistance(0)                            #distance 0 indicates it is a start node
+        start.setPred(None)                             #no predecessor at start
+        vertQueue = Queue()
+        vertQueue.enqueue(start)                        #add start to processing queue
+        while (vertQueue.size() > 0):
+            currentVert = vertQueue.dequeue()           #pop next node to process -> current node
+            for nbr in currentVert.getConnections():    #check all neighbors of the current node
+                if (nbr.getColor() == 'white'):         #if the neighbor is white
+                    nbr.setColor('gray')
+                    nbr.setDistance(currentVert.getDistance() + 1)   #set its distance
+                    nbr.setPred(currentVert)                         #current node is its predecessor
+                    vertQueue.enqueue(nbr)                           #add it to the queue
+            currentVert.setColor('black')
         
     def traverse(self, y):
         result = []
@@ -266,10 +268,9 @@ class Graph:
                 result.append(x.getId())
                 x = x.getPred()
             result.append(x.getId())
-            return result
+            return result[::-1]
         else:
-            return
-    
+            return  
     
     def dfs(self):
         for aVertex in self:
@@ -284,10 +285,8 @@ class Graph:
         result = []
         for i in times:
             result.append(i[0])
-        print(result)
         for i in range(1,len(result)):
             for j in result[:i]:
-                print(j,'\t',list(map(lambda x: x.id, self.vertList[result[i]].connectedTo)))
                 if j in [p.id for p in list(self.vertList[result[i]].connectedTo)]:
                     possible = False
         if possible:
@@ -308,6 +307,9 @@ class Graph:
         startVertex.setFinish(self.time)
 
     def dijkstra(self,start):
+        for i in self:
+            i.setDistance(sys.maxsize)
+            i.setPred(None)
         pq = BinHeap()
         start.setDistance(0)
         pq.buildHeap([(v.getDistance(),v) for v in self])
@@ -322,13 +324,11 @@ class Graph:
 
 def find_fastest(graph1:Graph, start):
     graph1.dijkstra(graph1.getVertex(start))
-    #print(list(graph1.vertList.keys()))
-    #graph.traverse(graph.getVertex(2))
+    result={}
     for i in list(graph1.vertList.keys()):
         if i != start:
-            result = graph1.traverse(graph1.getVertex(i))
-            result = result[::-1]
-            print('\n for ',i,': ',result)
+            result[i] = graph1.traverse(graph1.getVertex(i))
+    return result
 
 def mis_can(mis = 3, can = 3, bank = 1):
     graph_mis_can = Graph()
@@ -411,27 +411,34 @@ def litres(base1 = 3, base2 = 4, goal = 2):
 
 
 if __name__ == '__main__':
-#    gr1 = Graph()
- #   for i in range(6):
-  #      gr1.addVertex(i)
-   # gr1.addEdge(0,1,5)
-    #gr1.addEdge(0,5,2)
-#    gr1.addEdge(1,2,4)
- #   gr1.addEdge(2,3,9)
-  #  gr1.addEdge(3,4,1)
-   # gr1.addEdge(3,5,3)
-    #gr1.addEdge(4,0,1)
-#    gr1.addEdge(4,5,1)
- #   gr1.addEdge(5,2,1)
+    gr1 = Graph()
+    for i in range(6):
+        gr1.addVertex(i)
+    gr1.addEdge(0,1,5)
+    gr1.addEdge(0,5,2)
+    gr1.addEdge(1,2,4)
+    gr1.addEdge(2,3,9)
+    gr1.addEdge(3,4,1)
+    gr1.addEdge(3,5,3)
+    gr1.addEdge(4,0,1)
+    gr1.addEdge(4,5,1)
+    gr1.addEdge(5,2,1)
 
-  #  print(gr1.getEdges())
-   # print(gr1.graph_dot())
-    #print(gr1.getVertex(5))
-#    gr1.bfs(gr1.getVertex(1))
- #   print(gr1.getVertex(5))
-  #  print(gr1.traverse(gr1.getVertex(5)))
+    print(gr1.getEdges())
+    print(gr1.graph_dot())
+    print(gr1.getVertex(5))
+    gr1.bfs(gr1.getVertex(3))
+    print(gr1.getVertex(5))
+    print(gr1.traverse(gr1.getVertex(1)))
+    gr1.bfs(gr1.getVertex(3))
+    print(gr1.traverse(gr1.getVertex(1)))
     #print(gr1.dfs())
-    #find_fastest(gr1, 2)
+    result1 = find_fastest(gr1, 2)
+    for i in result1.keys():
+        print(i, ': ', result1[i])
+    result2 = find_fastest(gr1,5)
+    for i in result2.keys():
+        print(i, ': ', result2[i])
     print(mis_can())
     print(litres())
     
