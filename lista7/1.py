@@ -359,6 +359,8 @@ def mis_can(mis = 3, can = 3):
         raise TypeError('number of people has to be an integer')
     if mis <=0 or can <=0:
         raise ValueError('number of people has to be positive')
+    if mis<can:
+        raise ValueError('there cannot be more cannibals then missionaries')
     graph_mis_can = Graph()
     for i in range(4):
         for j in range(4):
@@ -367,25 +369,35 @@ def mis_can(mis = 3, can = 3):
     for i in list(graph_mis_can.vertList.keys()):
         if i[2]==1:
             if (i[0]>i[1] and i[0]-1>=0) or i[0]==1:
-                graph_mis_can.addEdge(i, (mis+1-i[0],can-i[1],0))
+                if mis+1-i[0]>=can-i[1] or mis+1-i[0]==0:
+                    graph_mis_can.addEdge(i, (mis+1-i[0],can-i[1],0))
             if (i[0]-1>i[1] and i[0]-2>=0) or i[0]==2:
+                if mis+2-i[0]>=can-i[1] or mis+2-i[0]==0:
                     graph_mis_can.addEdge(i, (mis+2-i[0],can-i[1],0))
             if (i[0]>=i[1] and i[0]-1>=0 and i[1]-1>=0) or i[0]==1:
-                graph_mis_can.addEdge(i, (mis+1-i[0],can+1-i[1],0))
+                if mis+1-i[0]>=can+1-i[1] or mis+1-i[0]==0:
+                    graph_mis_can.addEdge(i, (mis+1-i[0],can+1-i[1],0))
             if i[1]>0:
-                graph_mis_can.addEdge(i, (mis-i[0],can+1-i[1],0))
-                if i[1]-1>0:
+                if mis-i[0]>=can+1-i[1] or mis-i[0]==0:
+                    graph_mis_can.addEdge(i, (mis-i[0],can+1-i[1],0))
+            if i[1]-1>0:
+                if mis-i[0]>=can+2-i[1] or mis-i[0]==0:
                     graph_mis_can.addEdge(i, (mis-i[0],can+2-i[1],0))
         else:
             if (i[0]>i[1] and i[0]-1>=0) or i[0]==1:
-                graph_mis_can.addEdge(i, (mis+1-i[0],can-i[1],1))
+                if mis+1-i[0]>=can-i[1] or mis+1-i[0]==0:
+                    graph_mis_can.addEdge(i, (mis+1-i[0],can-i[1],1))
             if (i[0]-1>i[1] and i[0]-2>=0) or i[0]==2:
+                if mis+2-i[0]>=can-i[1] or mis+2-i[0]==0:
                     graph_mis_can.addEdge(i, (mis+2-i[0],can-i[1],1))
             if (i[0]>=i[1] and i[0]-1>=0 and i[1]-1>=0) or i[0]==1:
-                graph_mis_can.addEdge(i, (mis+1-i[0],can+1-i[1],1))
+                if mis+1-i[0]>=can+1-i[1] or mis+1-i[0]==0:
+                    graph_mis_can.addEdge(i, (mis+1-i[0],can+1-i[1],1))
             if i[1]>0:
-                graph_mis_can.addEdge(i, (mis-i[0],can+1-i[1],1))
-                if i[1]-1>0:
+                if mis-i[0]>=can+1-i[1] or mis-i[0]==0:
+                    graph_mis_can.addEdge(i, (mis-i[0],can+1-i[1],1))
+            if i[1]-1>0:
+                if mis-i[0]>=can+2-i[1] or mis-i[0]==0:
                     graph_mis_can.addEdge(i, (mis-i[0],can+2-i[1],1))
     graph_mis_can.bfs(graph_mis_can.getVertex((mis,can,1)))
     move_list = graph_mis_can.traverse(graph_mis_can.getVertex((mis,can,0)))
@@ -403,6 +415,10 @@ def litres(base1 = 3, base2 = 4, goal = 2):
     @goal: (int) amount to measure
     @return: (list) list of moves to solve the problem
     """
+    if not(isinstance(base1,int) and isinstance(base2,int) and isinstance(goal,int)):
+        raise TypeError('capacity of the canister has to be an integer')
+    if base1<goal and base2<goal:
+        raise ValueError('can\'t measure this amount')
     graph_litres = Graph()
     for i in range(base1+1):
         for j in range(base2+1):
@@ -484,7 +500,7 @@ if __name__ == '__main__':
     print('\ngraph 2:\n')
     print(gr2.sort_top())
     print('\ngraph 1:\n')
-    print(gr1.sort_top())
+    #print(gr1.sort_top())
     #-------finding short paths----------
     print('\ngraph 1:\nbase: 2\n')
     result1 = find_fastest(gr1, 2)
@@ -499,9 +515,9 @@ if __name__ == '__main__':
     for i in result3.keys():
         print(i, ': ', result3[i])
     print('\nbase: 8\n')
-    result4 = find_fastest(gr2,8)
-    for i in result4.keys():
-        print(i, ': ', result4[i])
+    #result4 = find_fastest(gr2,8)
+    #for i in result4.keys():
+     #   print(i, ': ', result4[i])
     #----missionaries and cannibals-----
     print('\n')
     print(mis_can())
