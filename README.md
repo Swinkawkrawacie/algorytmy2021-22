@@ -7,3 +7,5 @@
 * **Lista 5.** - w folderze ![lista 5](lista5); ![raport](raporty/Lista5.pdf) do listy;
 * **Lista 6.** - w folderze ![lista 6](lista6); ![raport](raporty/Lista6.pdf) do listy;
 * **Lista 7.** - w folderze ![lista 7](lista7); ![raport](raporty/Lista7.pdf) do listy;
+
+Teoria wykorzystywana w zadaniach oraz bazowe funkcje i klasy pochodzą z wykładu kursu.
